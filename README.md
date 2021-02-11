@@ -32,7 +32,7 @@ Following command filters out variants which have distance sum variance greater 
 java -jar ovm-annotsv-svc.jar -a annotsv_result.tsv -b bionano_pipeline_result.smap -d 50000 -o result.csv 
 ```
 
-### Common genes filter 
+### Overlapping genes filter 
 Following command filters out variants which have distance sum variance greater than 50000 bases and have no genes in overlap.
 
 ```console
