@@ -16,7 +16,7 @@ Java Runtime Environment 8 or higher.
 | -t | --variant_type | String || Variant type filter. Any combination of BND,CNV,DEL,INS,DUP,INV,UNK. ||
 
 ## Example of usage
-Some basic example usage of structural variant comparator follows. More detailed usage with sample data and results are presented in sample package in <b>./example</b> directory in this repository. Each directory in sample package contains README.txt file where can be found detailed description of each file. Compiled binary version of the application is presented in <b>./bin</b> directory of the repository.
+Some basic example usage of structural variant comparator follows. More detailed usage with sample data and results are presented in sample package in <b>./example</b> directory in this repository. Each directory in sample package contains README.txt file where can be found detailed description of each file. Runnable binary version of the application is presented in <b>./bin</b> directory of the repository.
 
 ### Basic usage
 In basic setup application compares all SVs contained in AnnotSV and Bionano result files. No filters are applied here.
