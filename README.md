@@ -19,21 +19,21 @@ Java Runtime Environment 8 or higher.
 Some basic example usage of structural variant comparator follows. More detailed usage with sample data and results are presented in sample package in <b>./example</b> directory in this repository. Each directory in sample package contains README.txt file where can be found detailed description of each file. Compiled binary version of the application is presented in <b>./bin</b> directory of the repository.
 
 ### Basic usage
-In basic setup application compare all SVs contained in AnnotSV and Bionano result files. No filters are applied here.
+In basic setup application compares all SVs contained in AnnotSV and Bionano result files. No filters are applied here.
 
 ```console
 java -jar om-annotsv-svc.jar -a annotsv_result.tsv -b bionano_pipeline_result.smap -o result.csv
 ```
 
 ### Variance distance sum filter
-Following command filter out variants which have distance sum variance greater than 50000 bases.
+Following command filters out variants which have distance sum variance greater than 50000 bases.
 
 ```consolev
 java -jar ovm-annotsv-svc.jar -a annotsv_result.tsv -b bionano_pipeline_result.smap -d 50000 -o result.csv 
 ```
 
 ### Common genes filter 
-Following command filter out variants which have distance sum variance greater than 50000 bases and have no genes in overlap.
+Following command filters out variants which have distance sum variance greater than 50000 bases and have no genes in overlap.
 
 ```console
 java -jar om-annotsv-svc.jar -a annotsv_result.tsv -b bionano_pipeline_result.smap -d 50000 -g -o result.csv 
