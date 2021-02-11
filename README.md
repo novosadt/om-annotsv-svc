@@ -15,5 +15,33 @@ Java Runtime Environment 8 or higher.
 | -o | --output | String || Output result file path. | \* |
 | -t | --variant_type | String || Variant type filter. Any combination of BND,CNV,DEL,INS,DUP,INV,UNK. ||
 
+## Example of usage
+Some basic example usage of structural variant comparator follows. More detailed usage with sample data and results are presented in sample package in example directory in this repository.
 
+### Basic usage
+In basic setup application compare all SVs contained in AnnotSV and Bionano result files. No filters are applied here.
 
+```console
+java -jar om-annotsv-svc.jar -a annotsv_result.tsv -b bionano_pipeline_result.smap -o result.csv
+```
+
+### Variance distance sum filter
+Following command filter out variants which have distance sum variance greater than 50000 bases.
+
+```consolev
+java -jar ovm-annotsv-svc.jar -a annotsv_result.tsv -b bionano_pipeline_result.smap -d 50000 -o result.csv 
+```
+
+### Common genes filter 
+Following command filter out variants which have distance sum variance greater than 50000 bases and have no genes in overlap.
+
+```console
+java -jar om-annotsv-svc.jar -a annotsv_result.tsv -b bionano_pipeline_result.smap -d 50000 -g -o result.csv 
+```
+
+### Variant type filter
+Following command will analyze only translocations (BND), deletions (DEL) and insertions (INS). Other variant types are ignored.
+
+```console
+java -jar om-annotsv-svc.jar -a annotsv_result.tsv -b bionano_pipeline_result.smap -t "BND,DEL,INS" -o result.csv 
+```
