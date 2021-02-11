@@ -1,6 +1,6 @@
 # om-annotsv-svc: Optical Mapping and AnnotSV Structural Variant Comparator
 
-A software tool for comparison of structural variants identified by optical mapping technology (Bionano Genomics) and 3rd generation sequencing technologies i.e. 10xGenomics, Oxford Nanopore Technologies and Pacific Biosciences. Structural variants produced by 3rd generation sequencing technologies are analyzed using AnnotSV software tool. The tool employes the distance sum variance between the Bionano and AnnotSV genomic coordinates for the beginning and end of individual SVs. The tools is provided as CLI application, platform independent.
+A software tool for comparison of structural variants identified by optical mapping technology (Bionano Genomics) and 3rd generation sequencing technologies i.e. 10xGenomics, Oxford Nanopore Technologies and Pacific Biosciences. Structural variants produced by 3rd generation sequencing technologies are analyzed using AnnotSV software tool. The tool employes the distance sum variance between the Bionano and AnnotSV genomic coordinates for the beginning and end of individual SVs. Various types of filtering, such as overlapping gene filter, variant type filter or distance sum variance filter can be used. The tool is provided as CLI application and is platform independent.
 
 ## Requirements
 Java Runtime Environment 8 or higher.
