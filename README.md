@@ -45,3 +45,11 @@ Following command will analyze only translocations (BND), deletions (DEL) and in
 ```console
 java -jar om-annotsv-svc.jar -a annotsv_result.tsv -b bionano_pipeline_result.smap -t "BND,DEL,INS" -o result.csv 
 ```
+
+## Contact
+If you have any problem or questions about the software tool, please contact us.
+
+Tomáš Novosád (tomas.novosad@vsb.cz)
+
+Jakub Savara (jakub.savara@vsb.cz)
+
