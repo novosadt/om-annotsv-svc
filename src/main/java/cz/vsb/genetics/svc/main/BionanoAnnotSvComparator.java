@@ -76,7 +76,7 @@ public class BionanoAnnotSvComparator {
         }
     }
 
-    public static CommandLine getCommandLine(String[] args) {
+    private static CommandLine getCommandLine(String[] args) {
         Options options = new Options();
 
         Option bionanoInput = new Option("b", ARG_BIONANO_INPUT, true, "bionano pipeline result file path (smap)");
@@ -131,7 +131,7 @@ public class BionanoAnnotSvComparator {
                     options,
                     "\nTomas Novosad, VSB-TU Ostrava, 2021" +
                           "\nFEI, Department of Computer Science" +
-                          "\nVersion: " + BionanoAnnotSvComparator.version() +
+                          "\nVersion: " + version() +
                           "\nLicense: GPL-3.0-only ");
 
             System.exit(1);
@@ -140,7 +140,7 @@ public class BionanoAnnotSvComparator {
         return cmd;
     }
 
-    public static String version() {
+    private static String version() {
         final Properties properties = new Properties();
 
         try {
