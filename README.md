@@ -1,6 +1,6 @@
 # om-annotsv-svc: Optical Mapping and AnnotSV Structural Variant Comparator
 
-A software tool for comparison of structural variants identified by optical mapping technology (Bionano Genomics) and long-read next-generation sequencing technologies i.e. 10x Genomics, Oxford Nanopore Technologies and Pacific Biosciences. Structural variants produced by long-read next-generation sequencing technologies are analyzed using AnnotSV software tool. The tool employes variance between Bionano and AnnotSV genomic coordinates for the beginning and end of individual SVs. Various types of filtering, such as overlapping gene filter, variant type filter or distance sum variance filter can be used. The tool is provided as CLI application and is platform independent.
+A software tool for comparison of structural variants identified by optical mapping technology (Bionano Genomics) and long-read next-generation sequencing technologies i.e. 10x Genomics, Oxford Nanopore Technologies and Pacific Biosciences. Structural variants produced by long-read next-generation sequencing technologies are analyzed using AnnotSV software tool. The tool employes distance variance between Bionano and AnnotSV genomic coordinates for the beginning and end of individual SVs. Various types of filtering, such as overlapping gene filter, variant type filter or distance sum variance filter can be used. The tool is provided as CLI application and is platform independent.
 
 ## Requirements
 Java Runtime Environment 8 or higher.
@@ -10,7 +10,7 @@ Java Runtime Environment 8 or higher.
 | --- | --- | --- | --- | --- | --- |
 | -a | --annotsv_input | String || AnnotSV analysis result TSV file path. | \* | 
 | -b | --bionano_input | String || Bionano Genomics analysis pipeline result SMAP file path.  | \* |
-| -d | --variant_distance | Integer || Distance sum variance filter (i.e. number of bases difference between variant from OM and AnnotSV) ||
+| -d | --variant_distance | Integer || Distance variance filter (i.e. number of bases difference between variant from OM and AnnotSV) ||
 | -g | --gene_intersection | Boolean | false | Overlapping genes filter (i.e. variants with non-overlapping genes are filtered out) ||
 | -o | --output | String || Output result file path. | \* |
 | -t | --variant_type | String || Variant type filter. Any combination of BND,CNV,DEL,INS,DUP,INV,UNK. ||
