@@ -25,7 +25,7 @@ In basic setup application compares all SVs contained in AnnotSV and Bionano res
 java -jar om-annotsv-svc.jar -a annotsv_result.tsv -b bionano_pipeline_result.smap -o result.csv
 ```
 
-### Variance distance sum filter
+### Variance distance filter
 Following command filters out variants which have distance variance greater than 50000 bases.
 
 ```consolev
