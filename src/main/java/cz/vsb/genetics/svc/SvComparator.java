@@ -125,7 +125,7 @@ public class SvComparator {
                 svLabel2 + "_dst_pos\t" +
                 "src_pos_dist\t" +
                 "dst_pos_dist\t" +
-                "dist_sum\t" +
+                "dist_var\t" +
                 svLabel1 + "_sv_size\t" +
                 svLabel2 + "_sv_size\t" +
                 svLabel1 + "_gene\t" +
