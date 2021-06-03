@@ -70,8 +70,10 @@ public class AnnotSvTsvParser extends SvResultParserBase {
         Long dstLoc = new Long(values[3]);
         Long svLength = StringUtils.isBlank(values[4]) ? 0 : Math.abs(new Long(values[4]));
         String svType = values[5].toLowerCase();
+        Double svFreq = getSvFreq(values[14]);
         String annotSvType = StringUtils.isBlank(values[15]) ? "" : values[15].toLowerCase();
         String gene = values[16];
+
 
         if (!annotSvType.equals("full"))
             return;
@@ -95,7 +97,7 @@ public class AnnotSvTsvParser extends SvResultParserBase {
         Chromosome srcChrom = Chromosome.getChromosome(srcChromId);
         Chromosome dstChrom = Chromosome.getChromosome(dstChromId);
 
-        StructuralVariant sv = new StructuralVariant(srcChrom, srcLoc, dstChrom, dstLoc, svLength, gene);
+        StructuralVariant sv = new StructuralVariant(srcChrom, srcLoc, dstChrom, dstLoc, svLength, gene, svFreq, null);
 
         switch (svType) {
             case "bnd" : addStructuralVariant(sv, translocations, SvType.BND); break;
@@ -105,6 +107,25 @@ public class AnnotSvTsvParser extends SvResultParserBase {
             case "dup" : addStructuralVariant(sv, duplications, SvType.DUP); break;
             case "inv" : addStructuralVariant(sv, inversions, SvType.INV); break;
             default: addStructuralVariant(sv, unknown, SvType.UNK);
+        }
+    }
+
+    private Double getSvFreq(String frequencies) {
+        String[] values = frequencies.split(":");
+
+        if (values.length < 2)
+            return null;
+
+        String[] referenceAlternate = values[1].split(",");
+
+        try {
+            double reference = new Double(referenceAlternate[0]);
+            double alternate = new Double(referenceAlternate[1]);
+
+            return alternate / (reference + alternate) * 100.0;
+        }
+        catch (NumberFormatException e) {
+            return null;
         }
     }
 }

@@ -7,7 +7,7 @@
     <groupId>cz.vsb.genetics</groupId>
     <artifactId>om-annotsv-svc</artifactId>
     <description>Optical Mapping and AnnotSV (ONT, 10x, PacBio) Structural Variant Comparator</description>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
 
     <dependencies>
         <dependency>

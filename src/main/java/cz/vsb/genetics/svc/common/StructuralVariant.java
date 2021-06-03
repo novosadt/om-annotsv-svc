@@ -26,16 +26,21 @@ public class StructuralVariant {
     private final Long dstLoc;
     private final Long size;
     private final String gene;
+    private final Double frequency;
+    private final Double confidenceScore;
     private SvType svType;
 
+
     public StructuralVariant(Chromosome srcChromosome, Long srcLoc, Chromosome dstChromosome, Long dstLoc,
-                             Long size, String gene) {
+                             Long size, String gene, Double frequency, Double confidenceScore) {
         this.srcChromosome = srcChromosome;
         this.srcLoc = srcLoc;
         this.dstChromosome = dstChromosome;
         this.dstLoc = dstLoc;
         this.size = size;
         this.gene = gene;
+        this.frequency = frequency;
+        this.confidenceScore = confidenceScore;
     }
 
     @Override
@@ -94,5 +99,13 @@ public class StructuralVariant {
 
     public void setSvType(SvType svType) {
         this.svType = svType;
+    }
+
+    public Double getFrequency() {
+        return frequency;
+    }
+
+    public Double getConfidenceScore() {
+        return confidenceScore;
     }
 }

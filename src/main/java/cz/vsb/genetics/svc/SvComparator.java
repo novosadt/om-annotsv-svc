@@ -23,7 +23,6 @@ import cz.vsb.genetics.svc.common.SvType;
 import cz.vsb.genetics.svc.parser.SvResultParser;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.util.*;
 
@@ -37,7 +36,7 @@ public class SvComparator {
 
     public void compareStructuralVariants(SvResultParser svParser1, String svLabel1, SvResultParser svParser2, String svLabel2,
                                           String outputFile, boolean reportOnlyCommonGeneVariants, Long variantDistance, Set<SvType> svTypes) throws Exception {
-        fileWriter = new FileWriter(new File(outputFile));
+        fileWriter = new FileWriter(outputFile);
         this.reportOnlyCommonGenes = reportOnlyCommonGeneVariants;
         this.variantDistance = variantDistance;
         this.svTypes = svTypes;
@@ -130,7 +129,10 @@ public class SvComparator {
                 svLabel2 + "_sv_size\t" +
                 svLabel1 + "_gene\t" +
                 svLabel2 + "_gene\t" +
-                "common_genes\n"
+                "common_genes\t" +
+                svLabel1 + "_sv_freq\t" +
+                svLabel2 + "_sv_freq\t" +
+                svLabel1 + "_sv_conf\n"
         );
     }
 
@@ -143,7 +145,7 @@ public class SvComparator {
 
         String commonGenes = StringUtils.join(getCommonGenes(structuralVariant, similarStructuralVariant), ",");
 
-        String line = String.format("%s\t%s\t%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%s\t%s\t%s\n",
+        String line = String.format("%s\t%s\t%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%s\t%s\t%s\t%s\t%s\t%s\n",
                 svType.toString(),
                 structuralVariant.getSrcChromosome().toString(),
                 structuralVariant.getDstChromosome().toString(),
@@ -158,7 +160,10 @@ public class SvComparator {
                 similarStructuralVariant.getSize(),
                 structuralVariant.getGene(),
                 similarStructuralVariant.getGene(),
-                commonGenes);
+                commonGenes,
+                structuralVariant.getFrequency() == null ? "" : String.format("%.02f", structuralVariant.getFrequency()),
+                similarStructuralVariant.getFrequency() == null ? "" : String.format("%.02f", similarStructuralVariant.getFrequency()),
+                structuralVariant.getConfidenceScore() == null ? "" : String.format("%.02f", structuralVariant.getConfidenceScore()));
 
         fileWriter.write(line);
     }

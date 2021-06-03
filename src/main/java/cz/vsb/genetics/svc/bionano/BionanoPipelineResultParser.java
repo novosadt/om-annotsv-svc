@@ -24,6 +24,7 @@ import cz.vsb.genetics.svc.common.StructuralVariant;
 import cz.vsb.genetics.svc.common.SvType;
 import cz.vsb.genetics.svc.parser.SvResultParserBase;
 import org.apache.commons.lang3.StringUtils;
+import sun.swing.SwingLazyValue;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -61,29 +62,42 @@ public class BionanoPipelineResultParser extends SvResultParserBase {
         String dstChromId = values[3];
         Long srcLoc = new Double(values[6]).longValue();
         Long dstLoc = new Double(values[7]).longValue();
-        String type = values[9].toLowerCase();
+        String svType = values[9].toLowerCase();
+        Double svFreq = getSvFreq(values[25]);
+        Double svConf = new Double(values[8]);
         Long size = dstLoc - srcLoc;
         String gene = values.length < 35 ? "" : values[34];
 
-        if (type.contains("translocation"))
+        if (svType.contains("translocation"))
             size = 0L;
 
         Chromosome srcChrom = Chromosome.getChromosome(srcChromId);
         Chromosome dstChrom = Chromosome.getChromosome(dstChromId);
 
-        StructuralVariant sv = new StructuralVariant(srcChrom, srcLoc, dstChrom, dstLoc, size, gene);
+        StructuralVariant sv = new StructuralVariant(srcChrom, srcLoc, dstChrom, dstLoc, size, gene, svFreq, svConf);
 
-        if (type.contains("translocation"))
+        if (svType.contains("translocation"))
             addStructuralVariant(sv, translocations, SvType.BND);
-        else if (type.contains("deletion"))
+        else if (svType.contains("deletion"))
             addStructuralVariant(sv, deletions, SvType.DEL);
-        else if (type.contains("insertion"))
+        else if (svType.contains("insertion"))
             addStructuralVariant(sv, insertions, SvType.INS);
-        else if (type.contains("inversion"))
+        else if (svType.contains("inversion"))
             addStructuralVariant(sv, inversions, SvType.INV);
-        else if (type.contains("duplication"))
+        else if (svType.contains("duplication"))
             addStructuralVariant(sv, duplications, SvType.DUP);
         else
             addStructuralVariant(sv, unknown, SvType.UNK);
+    }
+
+    private Double getSvFreq(String value) {
+        try {
+            Double frequency = new Double(value);
+
+            return frequency == null ? null : frequency * 100.0;
+        }
+        catch (NumberFormatException e) {
+            return null;
+        }
     }
 }

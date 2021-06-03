@@ -26,19 +26,16 @@
 package cz.vsb.genetics.svc.main;
 
 import cz.vsb.genetics.svc.SvComparator;
-import cz.vsb.genetics.svc.common.SvType;
 import cz.vsb.genetics.svc.annotsv.AnnotSvTsvParser;
 import cz.vsb.genetics.svc.bionano.BionanoPipelineResultParser;
+import cz.vsb.genetics.svc.common.SvType;
 import cz.vsb.genetics.svc.parser.SvResultParser;
-import jdk.nashorn.internal.runtime.ECMAException;
 import org.apache.commons.cli.*;
 
 import java.util.Properties;
 import java.util.Set;
 
 public class BionanoAnnotSvComparator {
-    private static final String VERSION = "1.1.2";
-
     private static final String ARG_BIONANO_INPUT = "bionano_input";
     private static final String ARG_ANNOTSV_INPUT = "annotsv_input";
     private static final String ARG_GENE_INTERSECTION = "gene_intersection";
