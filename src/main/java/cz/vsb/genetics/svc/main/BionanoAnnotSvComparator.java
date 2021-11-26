@@ -25,20 +25,17 @@
 
 package cz.vsb.genetics.svc.main;
 
+import cz.vsb.genetics.common.StructuralVariantType;
+import cz.vsb.genetics.sv.SvResultParser;
+import cz.vsb.genetics.sv.ngs.AnnotSvTsvParser;
+import cz.vsb.genetics.sv.om.BionanoPipelineResultParser;
 import cz.vsb.genetics.svc.SvComparator;
-import cz.vsb.genetics.svc.common.SvType;
-import cz.vsb.genetics.svc.annotsv.AnnotSvTsvParser;
-import cz.vsb.genetics.svc.bionano.BionanoPipelineResultParser;
-import cz.vsb.genetics.svc.parser.SvResultParser;
-import jdk.nashorn.internal.runtime.ECMAException;
 import org.apache.commons.cli.*;
 
 import java.util.Properties;
 import java.util.Set;
 
 public class BionanoAnnotSvComparator {
-    private static final String VERSION = "1.1.2";
-
     private static final String ARG_BIONANO_INPUT = "bionano_input";
     private static final String ARG_ANNOTSV_INPUT = "annotsv_input";
     private static final String ARG_GENE_INTERSECTION = "gene_intersection";
@@ -52,7 +49,7 @@ public class BionanoAnnotSvComparator {
         try {
             boolean onlyCommonGeneVariants = cmd.hasOption(ARG_GENE_INTERSECTION);
             Long variantDistance = cmd.hasOption(ARG_VARIANT_DISTANCE) ? new Long(cmd.getOptionValue(ARG_VARIANT_DISTANCE)) : null;
-            Set<SvType> variantType = cmd.hasOption(ARG_VARIANT_TYPE) ? SvType.getSvTypes(cmd.getOptionValue(ARG_VARIANT_TYPE)) : null;
+            Set<StructuralVariantType> variantType = cmd.hasOption(ARG_VARIANT_TYPE) ? StructuralVariantType.getSvTypes(cmd.getOptionValue(ARG_VARIANT_TYPE)) : null;
 
             SvResultParser bionanoParser = new BionanoPipelineResultParser();
             bionanoParser.setRemoveDuplicateVariants(true);

@@ -18,12 +18,11 @@
 
 package cz.vsb.genetics.svc;
 
-import cz.vsb.genetics.svc.common.StructuralVariant;
-import cz.vsb.genetics.svc.common.SvType;
-import cz.vsb.genetics.svc.parser.SvResultParser;
+import cz.vsb.genetics.common.StructuralVariant;
+import cz.vsb.genetics.common.StructuralVariantType;
+import cz.vsb.genetics.sv.SvResultParser;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.util.*;
 
@@ -31,13 +30,13 @@ public class SvComparator {
     private FileWriter fileWriter;
     private boolean reportOnlyCommonGenes = false;
     private Long variantDistance = null;
-    private Set<SvType> svTypes;
+    private Set<StructuralVariantType> svTypes;
     private String svLabel1;
     private String svLabel2;
 
     public void compareStructuralVariants(SvResultParser svParser1, String svLabel1, SvResultParser svParser2, String svLabel2,
-                                          String outputFile, boolean reportOnlyCommonGeneVariants, Long variantDistance, Set<SvType> svTypes) throws Exception {
-        fileWriter = new FileWriter(new File(outputFile));
+                                          String outputFile, boolean reportOnlyCommonGeneVariants, Long variantDistance, Set<StructuralVariantType> svTypes) throws Exception {
+        fileWriter = new FileWriter(outputFile);
         this.reportOnlyCommonGenes = reportOnlyCommonGeneVariants;
         this.variantDistance = variantDistance;
         this.svTypes = svTypes;
@@ -46,18 +45,18 @@ public class SvComparator {
 
         printHeader(svLabel1, svLabel2);
 
-        processStructuralVariants(svParser1.getTranslocations(), svParser2.getTranslocations(), SvType.BND);
-        processStructuralVariants(svParser1.getInversions(), svParser2.getInversions(),  SvType.INV);
-        processStructuralVariants(svParser1.getDuplications(), svParser2.getDuplications(),  SvType.DUP);
-        processStructuralVariants(svParser1.getDeletions(), svParser2.getDeletions(),  SvType.DEL);
-        processStructuralVariants(svParser1.getInsertions(), svParser2.getInsertions(),  SvType.INS);
-        processStructuralVariants(svParser1.getUnknown(), svParser2.getUnknown(),  SvType.UNK);
+        processStructuralVariants(svParser1.getTranslocations(), svParser2.getTranslocations(), StructuralVariantType.BND);
+        processStructuralVariants(svParser1.getInversions(), svParser2.getInversions(),  StructuralVariantType.INV);
+        processStructuralVariants(svParser1.getDuplications(), svParser2.getDuplications(),  StructuralVariantType.DUP);
+        processStructuralVariants(svParser1.getDeletions(), svParser2.getDeletions(),  StructuralVariantType.DEL);
+        processStructuralVariants(svParser1.getInsertions(), svParser2.getInsertions(),  StructuralVariantType.INS);
+        processStructuralVariants(svParser1.getUnknown(), svParser2.getUnknown(),  StructuralVariantType.UNK);
 
         fileWriter.close();
     }
 
     private void processStructuralVariants(List<StructuralVariant> structuralVariants1,
-            List<StructuralVariant> structuralVariants2, SvType svType) throws Exception{
+            List<StructuralVariant> structuralVariants2, StructuralVariantType svType) throws Exception{
         Set<StructuralVariant> processedVariants = new HashSet<>();
 
         if (svTypes != null && !svTypes.contains(svType))
@@ -135,7 +134,7 @@ public class SvComparator {
     }
 
     private void printSimilarTranslocations(StructuralVariant structuralVariant,
-            List<StructuralVariant> structuralVariants, SvType svType) throws Exception {
+                                            List<StructuralVariant> structuralVariants, StructuralVariantType svType) throws Exception {
         StructuralVariant similarStructuralVariant = structuralVariants.get(0);
 
         Long srcDist = Math.abs(structuralVariant.getSrcLoc() - similarStructuralVariant.getSrcLoc());
