@@ -18,8 +18,8 @@
 
 package cz.vsb.genetics.svc;
 
-import cz.vsb.genetics.common.StructuralVariant;
-import cz.vsb.genetics.common.StructuralVariantType;
+import cz.vsb.genetics.sv.StructuralVariant;
+import cz.vsb.genetics.sv.StructuralVariantType;
 import cz.vsb.genetics.sv.SvResultParser;
 import org.apache.commons.lang3.StringUtils;
 
