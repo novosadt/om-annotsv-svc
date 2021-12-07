@@ -2,6 +2,9 @@
 
 A software tool for comparison of structural variants identified by optical mapping technology (Bionano Genomics) and long-read next-generation sequencing technologies i.e. 10x Genomics, Oxford Nanopore Technologies and Pacific Biosciences. Structural variants produced by long-read next-generation sequencing technologies are analyzed using AnnotSV software tool. The tool employes distance variance between Bionano and AnnotSV genomic coordinates for the beginning and end of individual SVs. Various types of filtering, such as overlapping gene filter, variant type filter or distance variance filter can be used. The tool is provided as CLI application and is platform independent.
 
+## Current stable version
+Current stable version is 1.0 - branch 1.0. Main/master branch is dedicated for further development and should not be used in production environment.
+
 ## Requirements
 Java Runtime Environment 8 or higher.
 
