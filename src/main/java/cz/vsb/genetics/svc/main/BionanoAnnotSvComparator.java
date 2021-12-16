@@ -27,8 +27,8 @@ package cz.vsb.genetics.svc.main;
 
 import cz.vsb.genetics.sv.StructuralVariantType;
 import cz.vsb.genetics.sv.SvResultParser;
-import cz.vsb.genetics.ngs.sv.AnnotSvTsvParser;
-import cz.vsb.genetics.om.sv.BionanoPipelineResultParser;
+import cz.vsb.genetics.sv.ngs.AnnotSvTsvParser;
+import cz.vsb.genetics.sv.om.BionanoPipelineResultParser;
 import cz.vsb.genetics.svc.SvComparator;
 import org.apache.commons.cli.*;
 
