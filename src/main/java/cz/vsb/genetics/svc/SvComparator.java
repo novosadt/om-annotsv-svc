@@ -56,7 +56,7 @@ public class SvComparator {
     }
 
     private void processStructuralVariants(List<StructuralVariant> structuralVariants1,
-            List<StructuralVariant> structuralVariants2, StructuralVariantType svType) throws Exception{
+            List<StructuralVariant> structuralVariants2, StructuralVariantType svType) throws Exception {
         Set<StructuralVariant> processedVariants = new HashSet<>();
 
         if (svTypes != null && !svTypes.contains(svType))
@@ -75,7 +75,7 @@ public class SvComparator {
             if (similarVariants.size() == 0)
                 continue;
 
-            printSimilarTranslocations(structuralVariant, similarVariants, svType);
+            printSimilarVariants(structuralVariant, similarVariants, svType);
             similarVariantsCount++;
         }
 
@@ -133,29 +133,29 @@ public class SvComparator {
         );
     }
 
-    private void printSimilarTranslocations(StructuralVariant structuralVariant,
-                                            List<StructuralVariant> structuralVariants, StructuralVariantType svType) throws Exception {
-        StructuralVariant similarStructuralVariant = structuralVariants.get(0);
+    private void printSimilarVariants(StructuralVariant variant,
+                                      List<StructuralVariant> similarVariants, StructuralVariantType svType) throws Exception {
+        StructuralVariant similarStructuralVariant = similarVariants.get(0);
 
-        Long srcDist = Math.abs(structuralVariant.getSrcLoc() - similarStructuralVariant.getSrcLoc());
-        Long dstDist = Math.abs(structuralVariant.getDstLoc() - similarStructuralVariant.getDstLoc());
+        Long srcDist = Math.abs(variant.getSrcLoc() - similarStructuralVariant.getSrcLoc());
+        Long dstDist = Math.abs(variant.getDstLoc() - similarStructuralVariant.getDstLoc());
 
-        String commonGenes = StringUtils.join(getCommonGenes(structuralVariant, similarStructuralVariant), ",");
+        String commonGenes = StringUtils.join(getCommonGenes(variant, similarStructuralVariant), ",");
 
         String line = String.format("%s\t%s\t%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%s\t%s\t%s\n",
                 svType.toString(),
-                structuralVariant.getSrcChromosome().toString(),
-                structuralVariant.getDstChromosome().toString(),
-                structuralVariant.getSrcLoc(),
-                structuralVariant.getDstLoc(),
+                variant.getSrcChromosome().toString(),
+                variant.getDstChromosome().toString(),
+                variant.getSrcLoc(),
+                variant.getDstLoc(),
                 similarStructuralVariant.getSrcLoc(),
                 similarStructuralVariant.getDstLoc(),
                 srcDist,
                 dstDist,
                 srcDist + dstDist,
-                structuralVariant.getSize(),
+                variant.getSize(),
                 similarStructuralVariant.getSize(),
-                structuralVariant.getGene(),
+                variant.getGene(),
                 similarStructuralVariant.getGene(),
                 commonGenes);
 
