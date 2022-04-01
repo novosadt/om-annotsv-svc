@@ -126,7 +126,7 @@ public class BionanoAnnotSvComparator {
                             "[-t <comma separated list>]",
                     "\noptions:"                    ,
                     options,
-                    "\nTomas Novosad, VSB-TU Ostrava, 2021" +
+                    "\nTomas Novosad, VSB-TU Ostrava, 2022" +
                           "\nFEI, Department of Computer Science" +
                           "\nVersion: " + version() +
                           "\nLicense: GPL-3.0-only ");
