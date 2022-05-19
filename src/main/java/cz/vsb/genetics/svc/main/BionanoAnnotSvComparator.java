@@ -25,10 +25,11 @@
 
 package cz.vsb.genetics.svc.main;
 
+import com.sun.xml.internal.ws.api.model.wsdl.WSDLBoundOperation;
 import cz.vsb.genetics.sv.StructuralVariantType;
 import cz.vsb.genetics.sv.SvResultParser;
-import cz.vsb.genetics.sv.ngs.AnnotSvTsvParser;
-import cz.vsb.genetics.sv.om.BionanoPipelineResultParser;
+import cz.vsb.genetics.ngs.sv.AnnotSvTsvParser;
+import cz.vsb.genetics.om.sv.BionanoPipelineResultParser;
 import cz.vsb.genetics.svc.SvComparator;
 import org.apache.commons.cli.*;
 
@@ -39,6 +40,7 @@ public class BionanoAnnotSvComparator {
     private static final String ARG_BIONANO_INPUT = "bionano_input";
     private static final String ARG_ANNOTSV_INPUT = "annotsv_input";
     private static final String ARG_GENE_INTERSECTION = "gene_intersection";
+    private static final String ARG_PREFER_SVTYPE2 = "prefer_svtype2";
     private static final String ARG_VARIANT_DISTANCE = "variant_distance";
     private static final String ARG_VARIANT_TYPE = "variant_type";
     private static final String ARG_OUTPUT = "output";
@@ -48,6 +50,7 @@ public class BionanoAnnotSvComparator {
 
         try {
             boolean onlyCommonGeneVariants = cmd.hasOption(ARG_GENE_INTERSECTION);
+            boolean preferSvType2 = cmd.hasOption(ARG_PREFER_SVTYPE2) ? (Boolean)cmd.getParsedOptionValue(ARG_PREFER_SVTYPE2) : true;
             Long variantDistance = cmd.hasOption(ARG_VARIANT_DISTANCE) ? new Long(cmd.getOptionValue(ARG_VARIANT_DISTANCE)) : null;
             Set<StructuralVariantType> variantType = cmd.hasOption(ARG_VARIANT_TYPE) ? StructuralVariantType.getSvTypes(cmd.getOptionValue(ARG_VARIANT_TYPE)) : null;
 
@@ -55,7 +58,7 @@ public class BionanoAnnotSvComparator {
             bionanoParser.setRemoveDuplicateVariants(true);
             bionanoParser.parseResultFile(cmd.getOptionValue(ARG_BIONANO_INPUT), "[,\t]");
 
-            SvResultParser annotsvParser = new AnnotSvTsvParser();
+            SvResultParser annotsvParser = new AnnotSvTsvParser(preferSvType2);
             annotsvParser.setRemoveDuplicateVariants(true);
             annotsvParser.parseResultFile(cmd.getOptionValue(ARG_ANNOTSV_INPUT), "\t");
 
@@ -78,11 +81,13 @@ public class BionanoAnnotSvComparator {
 
         Option bionanoInput = new Option("b", ARG_BIONANO_INPUT, true, "bionano pipeline result file path (smap)");
         bionanoInput.setRequired(true);
+        bionanoInput.setArgName("smap file");
         bionanoInput.setType(String.class);
         options.addOption(bionanoInput);
 
         Option annotsvInput = new Option("a", ARG_ANNOTSV_INPUT, true, "annotsv tsv file path");
         annotsvInput.setRequired(true);
+        annotsvInput.setArgName("tsv file");
         annotsvInput.setType(String.class);
         options.addOption(annotsvInput);
 
@@ -90,18 +95,27 @@ public class BionanoAnnotSvComparator {
         geneIntersection.setRequired(false);
         options.addOption(geneIntersection);
 
+        Option svType2 = new Option("svt2", ARG_PREFER_SVTYPE2, true, "whether to prefer more specific variant type in case of BND and 10x/TELL-Seq");
+        svType2.setArgName("true|false");
+        svType2.setType(Boolean.class);
+        svType2.setRequired(false);
+        options.addOption(svType2);
+
         Option variantDistance = new Option("d", ARG_VARIANT_DISTANCE, true, "variants distance sum (start distance + end distance) filter");
         variantDistance.setType(Long.class);
+        variantDistance.setArgName("number");
         variantDistance.setRequired(false);
         options.addOption(variantDistance);
 
         Option variantType = new Option("t", ARG_VARIANT_TYPE, true, "variant type filter, any combination of [BND,CNV,DEL,INS,DUP,INV,UNK]");
         variantType.setType(String.class);
+        variantType.setArgName("sv types");
         variantType.setRequired(false);
         options.addOption(variantType);
 
         Option output = new Option("o", ARG_OUTPUT, true, "output result file");
         output.setRequired(true);
+        output.setArgName("csv file");
         output.setType(String.class);
         options.addOption(output);
 
@@ -117,14 +131,8 @@ public class BionanoAnnotSvComparator {
             System.out.println();
             formatter.printHelp(
                     300,
-                    "\njava -jar bionano-annotsv-svc.jar " +
-                            "-b <bionano pipeline result file> " +
-                            "-a <annotsv tsv file> " +
-                            "-o <result.csv> " +
-                            "[-g] " +
-                            "[-d <Integer>] " +
-                            "[-t <comma separated list>]",
-                    "\noptions:"                    ,
+                    "\njava -jar bionano-annotsv-svc.jar ",
+                    "\noptions:",
                     options,
                     "\nTomas Novosad, VSB-TU Ostrava, 2022" +
                           "\nFEI, Department of Computer Science" +
