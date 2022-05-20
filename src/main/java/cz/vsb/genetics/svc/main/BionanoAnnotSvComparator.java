@@ -104,7 +104,7 @@ public class BionanoAnnotSvComparator {
         variantDistance.setRequired(false);
         options.addOption(variantDistance);
 
-        Option variantType = new Option("t", ARG_VARIANT_TYPE, true, "variant type filter, any combination of [BND,CNV,DEL,INS,DUP,INV,UNK]");
+        Option variantType = new Option("t", ARG_VARIANT_TYPE, true, "variant type filter, any combination of [BND,CNV,DEL,INS,DUP,INV,UNK], comma separated");
         variantType.setType(String.class);
         variantType.setArgName("sv types");
         variantType.setRequired(false);
