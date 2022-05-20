@@ -128,7 +128,7 @@ public class BionanoAnnotSvComparator {
             System.out.println();
             formatter.printHelp(
                     300,
-                    "\njava -jar bionano-annotsv-svc.jar ",
+                    "\njava -jar om-annotsv-svc.jar ",
                     "\noptions:",
                     options,
                     "\nTomas Novosad, VSB-TU Ostrava, 2022" +
