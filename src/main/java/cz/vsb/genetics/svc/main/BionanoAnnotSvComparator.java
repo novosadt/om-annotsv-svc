@@ -123,7 +123,7 @@ public class BionanoAnnotSvComparator {
         try {
             cmd = parser.parse(options, args);
         } catch (ParseException e) {
-            System.out.println("\nSVC - Bionano Genomics (OM) and AnnotSV (ONT, 10x, PacBio) Structural Variant Comparator, v" + BionanoAnnotSvComparator.version() + "\n");
+            System.out.println("\nSVC - Bionano Genomics (OM) and AnnotSV (ONT, 10x/TELL-Seq, PacBio) Structural Variant Comparator, v" + BionanoAnnotSvComparator.version() + "\n");
             System.out.println(e.getMessage());
             System.out.println();
             formatter.printHelp(
