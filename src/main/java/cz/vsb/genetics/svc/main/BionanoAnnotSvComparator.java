@@ -25,7 +25,6 @@
 
 package cz.vsb.genetics.svc.main;
 
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLBoundOperation;
 import cz.vsb.genetics.sv.StructuralVariantType;
 import cz.vsb.genetics.sv.SvResultParser;
 import cz.vsb.genetics.ngs.sv.AnnotSvTsvParser;
@@ -40,7 +39,7 @@ public class BionanoAnnotSvComparator {
     private static final String ARG_BIONANO_INPUT = "bionano_input";
     private static final String ARG_ANNOTSV_INPUT = "annotsv_input";
     private static final String ARG_GENE_INTERSECTION = "gene_intersection";
-    private static final String ARG_PREFER_SVTYPE2 = "prefer_svtype2";
+    private static final String ARG_PREFER_BASE_SVTYPE = "prefer_base_svtype";
     private static final String ARG_VARIANT_DISTANCE = "variant_distance";
     private static final String ARG_VARIANT_TYPE = "variant_type";
     private static final String ARG_OUTPUT = "output";
@@ -50,7 +49,7 @@ public class BionanoAnnotSvComparator {
 
         try {
             boolean onlyCommonGeneVariants = cmd.hasOption(ARG_GENE_INTERSECTION);
-            boolean preferSvType2 = cmd.hasOption(ARG_PREFER_SVTYPE2) ? (Boolean)cmd.getParsedOptionValue(ARG_PREFER_SVTYPE2) : true;
+            boolean preferBaseSvType = cmd.hasOption(ARG_PREFER_BASE_SVTYPE);
             Long variantDistance = cmd.hasOption(ARG_VARIANT_DISTANCE) ? new Long(cmd.getOptionValue(ARG_VARIANT_DISTANCE)) : null;
             Set<StructuralVariantType> variantType = cmd.hasOption(ARG_VARIANT_TYPE) ? StructuralVariantType.getSvTypes(cmd.getOptionValue(ARG_VARIANT_TYPE)) : null;
 
@@ -58,7 +57,7 @@ public class BionanoAnnotSvComparator {
             bionanoParser.setRemoveDuplicateVariants(true);
             bionanoParser.parseResultFile(cmd.getOptionValue(ARG_BIONANO_INPUT), "[,\t]");
 
-            SvResultParser annotsvParser = new AnnotSvTsvParser(preferSvType2);
+            SvResultParser annotsvParser = new AnnotSvTsvParser(preferBaseSvType);
             annotsvParser.setRemoveDuplicateVariants(true);
             annotsvParser.parseResultFile(cmd.getOptionValue(ARG_ANNOTSV_INPUT), "\t");
 
@@ -95,13 +94,11 @@ public class BionanoAnnotSvComparator {
         geneIntersection.setRequired(false);
         options.addOption(geneIntersection);
 
-        Option svType2 = new Option("svt2", ARG_PREFER_SVTYPE2, true, "whether to prefer more specific variant type in case of BND and 10x/TELL-Seq");
-        svType2.setArgName("true|false");
-        svType2.setType(Boolean.class);
-        svType2.setRequired(false);
-        options.addOption(svType2);
+        Option svType = new Option("svt", ARG_PREFER_BASE_SVTYPE, true, "whether to prefer base variant type (SVTYPE) in case of BND and 10x/TELL-Seq (default false)");
+        svType.setRequired(false);
+        options.addOption(svType);
 
-        Option variantDistance = new Option("d", ARG_VARIANT_DISTANCE, true, "variants distance sum (start distance + end distance) filter");
+        Option variantDistance = new Option("d", ARG_VARIANT_DISTANCE, true, "distance variance filter - number of bases difference between variant from NGS and OM");
         variantDistance.setType(Long.class);
         variantDistance.setArgName("number");
         variantDistance.setRequired(false);

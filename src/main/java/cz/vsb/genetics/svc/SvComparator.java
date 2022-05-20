@@ -129,7 +129,9 @@ public class SvComparator {
                 svLabel2 + "_sv_size\t" +
                 svLabel1 + "_gene\t" +
                 svLabel2 + "_gene\t" +
-                "common_genes\n"
+                "common_genes\t" +
+                svLabel1 + "_smap_entry_id\t" +
+                svLabel2 + "_id\n"
         );
     }
 
@@ -142,7 +144,7 @@ public class SvComparator {
 
         String commonGenes = StringUtils.join(getCommonGenes(variant, similarStructuralVariant), ",");
 
-        String line = String.format("%s\t%s\t%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%s\t%s\t%s\n",
+        String line = String.format("%s\t%s\t%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%s\t%s\t%s\t%s\t%s\n",
                 svType.toString(),
                 variant.getSrcChromosome().toString(),
                 variant.getDstChromosome().toString(),
@@ -157,7 +159,9 @@ public class SvComparator {
                 similarStructuralVariant.getSize(),
                 variant.getGene(),
                 similarStructuralVariant.getGene(),
-                commonGenes);
+                commonGenes,
+                variant.getId(),
+                similarStructuralVariant.getId());
 
         fileWriter.write(line);
     }
