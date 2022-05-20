@@ -13,7 +13,7 @@ Java Runtime Environment 8 or higher.
 | --- | --- | --- | --- | --- | --- |
 | -a | --annotsv_input | String || AnnotSV analysis result TSV file path. | \* | 
 | -b | --bionano_input | String || Bionano Genomics analysis pipeline result SMAP file path.  | \* |
-| -d | --variant_distance | Integer || Distance variance filter (i.e. number of bases difference between variant from OM and AnnotSV) ||
+| -d | --variant_distance | Integer || Distance variance filter (i.e. number of bases difference between variant from OM and NGS/WGS) ||
 | -g | --gene_intersection | Boolean | false | Overlapping genes filter (i.e. variants with non-overlapping genes are filtered out) ||
 | -o | --output | String || Output result file path. | \* |
 | -t | --variant_type | String || Variant type filter. Any combination of BND,CNV,DEL,INS,DUP,INV,UNK. ||
