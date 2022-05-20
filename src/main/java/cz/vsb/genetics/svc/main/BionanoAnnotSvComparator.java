@@ -94,7 +94,7 @@ public class BionanoAnnotSvComparator {
         geneIntersection.setRequired(false);
         options.addOption(geneIntersection);
 
-        Option svType = new Option("svt", ARG_PREFER_BASE_SVTYPE, true, "whether to prefer base variant type (SVTYPE) in case of BND and 10x/TELL-Seq (default false)");
+        Option svType = new Option("svt", ARG_PREFER_BASE_SVTYPE, false, "whether to prefer base variant type (SVTYPE) in case of BND and 10x/TELL-Seq (default false)");
         svType.setRequired(false);
         options.addOption(svType);
 
