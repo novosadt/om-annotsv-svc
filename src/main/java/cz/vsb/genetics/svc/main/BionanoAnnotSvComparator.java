@@ -29,7 +29,7 @@ import cz.vsb.genetics.sv.StructuralVariantType;
 import cz.vsb.genetics.sv.SvResultParser;
 import cz.vsb.genetics.ngs.sv.AnnotSvTsvParser;
 import cz.vsb.genetics.om.sv.BionanoPipelineResultParser;
-import cz.vsb.genetics.svc.SvComparator;
+import cz.vsb.genetics.sv.SvComparator;
 import org.apache.commons.cli.*;
 
 import java.util.Properties;
