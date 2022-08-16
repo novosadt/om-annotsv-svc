@@ -1,8 +1,11 @@
 package cz.vsb.genetics.svc.main;
 
+import cz.vsb.genetics.ngs.sv.AnnotSvTsvParser;
 import cz.vsb.genetics.ngs.sv.SamplotBionanoVariantGenerator;
+import cz.vsb.genetics.ngs.sv.SamplotCsvParser;
 import cz.vsb.genetics.om.sv.BionanoPipelineResultParser;
 import cz.vsb.genetics.sv.StructuralVariantType;
+import cz.vsb.genetics.sv.SvComparator;
 import cz.vsb.genetics.sv.SvResultParser;
 import org.apache.commons.cli.*;
 
@@ -48,7 +51,16 @@ public class BionanoSamplotSvComparator {
                         forks);
             }
 
+            SvResultParser samplotParser = new SamplotCsvParser();
+            samplotParser.setRemoveDuplicateVariants(true);
+            samplotParser.parseResultFile(cmd.getOptionValue(ARG_SAMPLOT_VARIANTS), "\t");
 
+            SvComparator svComparator = new SvComparator();
+            svComparator.compareStructuralVariants(bionanoParser, "bionano", samplotParser,
+                    "samplot", cmd.getOptionValue(ARG_OUTPUT), false, variantDistance, variantType);
+
+            bionanoParser.printStructuralVariantStats();
+            samplotParser.printStructuralVariantStats();
 
         }
         catch (Exception e) {
