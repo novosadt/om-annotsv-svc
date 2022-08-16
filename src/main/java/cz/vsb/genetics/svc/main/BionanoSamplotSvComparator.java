@@ -48,6 +48,8 @@ public class BionanoSamplotSvComparator {
                         forks);
             }
 
+
+
         }
         catch (Exception e) {
             System.out.println("Error occurred:");
