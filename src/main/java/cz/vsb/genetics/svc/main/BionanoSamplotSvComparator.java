@@ -1,6 +1,5 @@
 package cz.vsb.genetics.svc.main;
 
-import cz.vsb.genetics.ngs.sv.AnnotSvTsvParser;
 import cz.vsb.genetics.ngs.sv.SamplotBionanoVariantGenerator;
 import cz.vsb.genetics.ngs.sv.SamplotCsvParser;
 import cz.vsb.genetics.om.sv.BionanoPipelineResultParser;
