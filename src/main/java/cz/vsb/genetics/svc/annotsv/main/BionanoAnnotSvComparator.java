@@ -1,11 +1,11 @@
 /*
- * om-hts-svc: Optical Mapping and High-Throughput-Sequencing Variant Comparator
+ * om-annotsv-svc: Optical Mapping and AnnotSV Structural Variant Comparator
  *
  * Application for comparison of structural variants found by optical mapping technology (Bionano Genomics)
- * with AnnotSV and Samplot analysis of 3rd generation sequencing technologies 10xGenomics, Oxford Nanopore Technologies and Pacbio.
+ * with AnnotSV analysis of 3rd generation sequencing technologies 10xGenomics, Oxford Nanopore Technologies and Pacbio.
  *
  *
- * Copyright (C) 2022  Tomas Novosad
+ * Copyright (C) 2021  Tomas Novosad
  * VSB-TUO, Faculty of Electrical Engineering and Computer Science
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,39 +23,35 @@
  */
 
 
-package cz.vsb.genetics.svc.main;
+package cz.vsb.genetics.svc.annotsv.main;
 
 import cz.vsb.genetics.ngs.sv.AnnotSvTsvParser;
-import cz.vsb.genetics.ngs.sv.SamplotCsvParser;
 import cz.vsb.genetics.om.sv.BionanoPipelineResultParser;
-import cz.vsb.genetics.sv.MultipleSvComparator;
 import cz.vsb.genetics.sv.StructuralVariantType;
+import cz.vsb.genetics.sv.SvComparator;
 import cz.vsb.genetics.sv.SvResultParser;
 import org.apache.commons.cli.*;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-public class BionanoHtsSvComparator {
+public class BionanoAnnotSvComparator {
     private static final String ARG_BIONANO_INPUT = "bionano_input";
     private static final String ARG_ANNOTSV_INPUT = "annotsv_input";
-    private static final String ARG_SAMPLOT_INPUT = "samplot_input";
-    private static final String ARG_VARIANT_TYPE = "variant_type";
-    private static final String ARG_VARIANT_DISTANCE = "variant_distance";
     private static final String ARG_GENE_INTERSECTION = "gene_intersection";
     private static final String ARG_PREFER_BASE_SVTYPE = "prefer_base_svtype";
+    private static final String ARG_VARIANT_DISTANCE = "variant_distance";
+    private static final String ARG_VARIANT_TYPE = "variant_type";
     private static final String ARG_OUTPUT = "output";
 
     public static void main(String[] args) {
         CommandLine cmd = getCommandLine(args);
 
         try {
-            Long variantDistance = cmd.hasOption(ARG_VARIANT_DISTANCE) ? new Long(cmd.getOptionValue(ARG_VARIANT_DISTANCE)) : null;
-            Set<StructuralVariantType> variantType = cmd.hasOption(ARG_VARIANT_TYPE) ? StructuralVariantType.getSvTypes(cmd.getOptionValue(ARG_VARIANT_TYPE)) : null;
             boolean onlyCommonGeneVariants = cmd.hasOption(ARG_GENE_INTERSECTION);
             boolean preferBaseSvType = cmd.hasOption(ARG_PREFER_BASE_SVTYPE);
+            Long variantDistance = cmd.hasOption(ARG_VARIANT_DISTANCE) ? new Long(cmd.getOptionValue(ARG_VARIANT_DISTANCE)) : null;
+            Set<StructuralVariantType> variantType = cmd.hasOption(ARG_VARIANT_TYPE) ? StructuralVariantType.getSvTypes(cmd.getOptionValue(ARG_VARIANT_TYPE)) : null;
 
             SvResultParser bionanoParser = new BionanoPipelineResultParser();
             bionanoParser.setRemoveDuplicateVariants(true);
@@ -65,20 +61,12 @@ public class BionanoHtsSvComparator {
             annotsvParser.setRemoveDuplicateVariants(true);
             annotsvParser.parseResultFile(cmd.getOptionValue(ARG_ANNOTSV_INPUT), "\t");
 
-            SvResultParser samplotParser = new SamplotCsvParser();
-            samplotParser.setRemoveDuplicateVariants(true);
-            samplotParser.parseResultFile(cmd.getOptionValue(ARG_SAMPLOT_INPUT), "\t");
-
-            List<SvResultParser> otherParsers = Arrays.asList(annotsvParser, samplotParser);
-            List<String> otherLabels = Arrays.asList("annotsv", "samplot");
-            MultipleSvComparator svComparator = new MultipleSvComparator();
-            svComparator.compareStructuralVariants(bionanoParser, "bionano", otherParsers, otherLabels,
-                    cmd.getOptionValue(ARG_OUTPUT), onlyCommonGeneVariants, variantDistance, variantType);
+            SvComparator svComparator = new SvComparator();
+            svComparator.compareStructuralVariants(bionanoParser, "bionano", annotsvParser,
+                "annotsv", cmd.getOptionValue(ARG_OUTPUT), onlyCommonGeneVariants, variantDistance, variantType);
 
             bionanoParser.printStructuralVariantStats();
             annotsvParser.printStructuralVariantStats();
-            samplotParser.printStructuralVariantStats();
-
         }
         catch (Exception e) {
             System.out.println("Error occurred:");
@@ -102,31 +90,25 @@ public class BionanoHtsSvComparator {
         annotsvInput.setType(String.class);
         options.addOption(annotsvInput);
 
-        Option samplotVariants = new Option("s", ARG_SAMPLOT_INPUT, true, "samplot csv variants file path");
-        samplotVariants.setRequired(true);
-        samplotVariants.setArgName("csv file");
-        samplotVariants.setType(String.class);
-        options.addOption(samplotVariants);
-
         Option geneIntersection = new Option("g", ARG_GENE_INTERSECTION, false, "select only variants with common genes (default false)");
         geneIntersection.setRequired(false);
         options.addOption(geneIntersection);
 
-        Option svType = new Option("svt", ARG_PREFER_BASE_SVTYPE, false, "whether to prefer base variant type (SVTYPE) in case of BND and 10x/TELL-Seq (default false i.e. SVTYPE2)");
+        Option svType = new Option("svt", ARG_PREFER_BASE_SVTYPE, false, "whether to prefer base variant type (SVTYPE) in case of BND and 10x/TELL-Seq (default false)");
         svType.setRequired(false);
         options.addOption(svType);
-
-        Option variantType = new Option("t", ARG_VARIANT_TYPE, true, "variant type filter, any combination of [BND,CNV,DEL,INS,DUP,INV,UNK], comma separated");
-        variantType.setType(String.class);
-        variantType.setArgName("sv types");
-        variantType.setRequired(false);
-        options.addOption(variantType);
 
         Option variantDistance = new Option("d", ARG_VARIANT_DISTANCE, true, "distance variance filter - number of bases difference between variant from NGS and OM");
         variantDistance.setType(Long.class);
         variantDistance.setArgName("number");
         variantDistance.setRequired(false);
         options.addOption(variantDistance);
+
+        Option variantType = new Option("t", ARG_VARIANT_TYPE, true, "variant type filter, any combination of [BND,CNV,DEL,INS,DUP,INV,UNK], comma separated");
+        variantType.setType(String.class);
+        variantType.setArgName("sv types");
+        variantType.setRequired(false);
+        options.addOption(variantType);
 
         Option output = new Option("o", ARG_OUTPUT, true, "output result file");
         output.setRequired(true);
@@ -141,18 +123,18 @@ public class BionanoHtsSvComparator {
         try {
             cmd = parser.parse(options, args);
         } catch (ParseException e) {
-            System.out.println("\nSVC - Bionano Genomics (OM) and SAMPlot Structural Variant Comparator, v" + BionanoHtsSvComparator.version() + "\n");
+            System.out.println("\nSVC - Bionano Genomics (OM) and AnnotSV (ONT, 10x/TELL-Seq, PacBio) Structural Variant Comparator, v" + BionanoAnnotSvComparator.version() + "\n");
             System.out.println(e.getMessage());
             System.out.println();
             formatter.printHelp(
                     300,
-                    "\njava -jar om-samplot-svc.jar ",
+                    "\njava -jar om-annotsv-svc.jar ",
                     "\noptions:",
                     options,
                     "\nTomas Novosad, VSB-TU Ostrava, 2022" +
-                            "\nFEI, Department of Computer Science" +
-                            "\nVersion: " + version() +
-                            "\nLicense: GPL-3.0-only ");
+                          "\nFEI, Department of Computer Science" +
+                          "\nVersion: " + version() +
+                          "\nLicense: GPL-3.0-only ");
 
             System.exit(1);
         }
@@ -164,7 +146,7 @@ public class BionanoHtsSvComparator {
         final Properties properties = new Properties();
 
         try {
-            properties.load(BionanoHtsSvComparator.class.getClassLoader().getResourceAsStream("project.properties"));
+            properties.load(BionanoAnnotSvComparator.class.getClassLoader().getResourceAsStream("project.properties"));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -172,4 +154,5 @@ public class BionanoHtsSvComparator {
 
         return properties.getProperty("version");
     }
+
 }

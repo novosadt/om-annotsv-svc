@@ -13,7 +13,7 @@
         <dependency>
             <groupId>cz.vsb.genetics</groupId>
             <artifactId>vsb-genetics-jdk</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
 
         <dependency>
