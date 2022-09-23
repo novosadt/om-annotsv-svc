@@ -40,7 +40,7 @@ public class BionanoAnnotSvComparator {
     private static final String ARG_ANNOTSV_INPUT = "annotsv_input";
     private static final String ARG_GENE_INTERSECTION = "gene_intersection";
     private static final String ARG_PREFER_BASE_SVTYPE = "prefer_base_svtype";
-    private static final String ARG_VARIANT_DISTANCE = "variant_distance";
+    private static final String ARG_DISTANCE_VARIANCE = "distance_variance";
     private static final String ARG_VARIANT_TYPE = "variant_type";
     private static final String ARG_OUTPUT = "output";
 
@@ -50,7 +50,7 @@ public class BionanoAnnotSvComparator {
         try {
             boolean onlyCommonGeneVariants = cmd.hasOption(ARG_GENE_INTERSECTION);
             boolean preferBaseSvType = cmd.hasOption(ARG_PREFER_BASE_SVTYPE);
-            Long variantDistance = cmd.hasOption(ARG_VARIANT_DISTANCE) ? new Long(cmd.getOptionValue(ARG_VARIANT_DISTANCE)) : null;
+            Long variantDistance = cmd.hasOption(ARG_DISTANCE_VARIANCE) ? new Long(cmd.getOptionValue(ARG_DISTANCE_VARIANCE)) : null;
             Set<StructuralVariantType> variantType = cmd.hasOption(ARG_VARIANT_TYPE) ? StructuralVariantType.getSvTypes(cmd.getOptionValue(ARG_VARIANT_TYPE)) : null;
 
             SvResultParser bionanoParser = new BionanoPipelineResultParser();
@@ -66,7 +66,7 @@ public class BionanoAnnotSvComparator {
                 "annotsv", cmd.getOptionValue(ARG_OUTPUT));
 
             svComparator.setOnlyCommonGenes(onlyCommonGeneVariants);
-            svComparator.setVariantDistance(variantDistance);
+            svComparator.setDistanceVariance(variantDistance);
             svComparator.setVariantType(variantType);
 
             bionanoParser.printStructuralVariantStats();
@@ -102,11 +102,11 @@ public class BionanoAnnotSvComparator {
         svType.setRequired(false);
         options.addOption(svType);
 
-        Option variantDistance = new Option("d", ARG_VARIANT_DISTANCE, true, "distance variance filter - number of bases difference between variant from NGS and OM");
-        variantDistance.setType(Long.class);
-        variantDistance.setArgName("number");
-        variantDistance.setRequired(false);
-        options.addOption(variantDistance);
+        Option distanceVariance = new Option("d", ARG_DISTANCE_VARIANCE, true, "distance variance filter - number of bases difference between variant from NGS and OM");
+        distanceVariance.setType(Long.class);
+        distanceVariance.setArgName("number");
+        distanceVariance.setRequired(false);
+        options.addOption(distanceVariance);
 
         Option variantType = new Option("t", ARG_VARIANT_TYPE, true, "variant type filter, any combination of [BND,CNV,DEL,INS,DUP,INV,UNK], comma separated");
         variantType.setType(String.class);
