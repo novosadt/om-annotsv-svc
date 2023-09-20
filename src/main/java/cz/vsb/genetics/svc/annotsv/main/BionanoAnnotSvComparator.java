@@ -53,20 +53,19 @@ public class BionanoAnnotSvComparator {
             Long variantDistance = cmd.hasOption(ARG_DISTANCE_VARIANCE) ? new Long(cmd.getOptionValue(ARG_DISTANCE_VARIANCE)) : null;
             Set<StructuralVariantType> variantType = cmd.hasOption(ARG_VARIANT_TYPE) ? StructuralVariantType.getSvTypes(cmd.getOptionValue(ARG_VARIANT_TYPE)) : null;
 
-            SvResultParser bionanoParser = new BionanoPipelineResultParser();
+            SvResultParser bionanoParser = new BionanoPipelineResultParser("bionano");
             bionanoParser.setRemoveDuplicateVariants(true);
             bionanoParser.parseResultFile(cmd.getOptionValue(ARG_BIONANO_INPUT), "[,\t]");
 
-            SvResultParser annotsvParser = new AnnotSvTsvParser(preferBaseSvType);
+            SvResultParser annotsvParser = new AnnotSvTsvParser("annotsv", preferBaseSvType);
             annotsvParser.setRemoveDuplicateVariants(true);
             annotsvParser.parseResultFile(cmd.getOptionValue(ARG_ANNOTSV_INPUT), "\t");
 
             SvComparator svComparator = new SvComparator();
             svComparator.setOnlyCommonGenes(onlyCommonGeneVariants);
-            svComparator.setDistanceVariance(variantDistance);
+            svComparator.setDistanceVarianceThreshold(variantDistance);
             svComparator.setVariantType(variantType);
-            svComparator.compareStructuralVariants(bionanoParser, "bionano", annotsvParser,
-                "annotsv", cmd.getOptionValue(ARG_OUTPUT));
+            svComparator.compareStructuralVariants(bionanoParser, annotsvParser, cmd.getOptionValue(ARG_OUTPUT));
 
             bionanoParser.printStructuralVariantStats();
             annotsvParser.printStructuralVariantStats();
