@@ -64,7 +64,7 @@ public class BionanoAnnotSvComparator {
             SvComparator svComparator = new SvComparator();
             svComparator.setOnlyCommonGenes(onlyCommonGeneVariants);
             svComparator.setDistanceVarianceThreshold(variantDistance);
-            svComparator.setVariantType(variantType);
+            svComparator.setVariantTypes(variantType);
             svComparator.compareStructuralVariants(bionanoParser, annotsvParser, cmd.getOptionValue(ARG_OUTPUT));
 
             bionanoParser.printStructuralVariantStats();
