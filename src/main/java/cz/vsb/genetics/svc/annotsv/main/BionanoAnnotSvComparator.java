@@ -50,7 +50,7 @@ public class BionanoAnnotSvComparator {
         try {
             boolean onlyCommonGeneVariants = cmd.hasOption(ARG_GENE_INTERSECTION);
             boolean preferBaseSvType = cmd.hasOption(ARG_PREFER_BASE_SVTYPE);
-            Long variantDistance = cmd.hasOption(ARG_DISTANCE_VARIANCE) ? new Long(cmd.getOptionValue(ARG_DISTANCE_VARIANCE)) : null;
+            Integer variantDistance = cmd.hasOption(ARG_DISTANCE_VARIANCE) ? Integer.valueOf(cmd.getOptionValue(ARG_DISTANCE_VARIANCE)) : null;
             Set<StructuralVariantType> variantType = cmd.hasOption(ARG_VARIANT_TYPE) ? StructuralVariantType.getSvTypes(cmd.getOptionValue(ARG_VARIANT_TYPE)) : null;
 
             SvResultParser bionanoParser = new BionanoPipelineResultParser("bionano");
@@ -101,7 +101,7 @@ public class BionanoAnnotSvComparator {
         options.addOption(svType);
 
         Option distanceVariance = new Option("d", ARG_DISTANCE_VARIANCE, true, "distance variance filter - number of bases difference between variant from NGS and OM");
-        distanceVariance.setType(Long.class);
+        distanceVariance.setType(Integer.class);
         distanceVariance.setArgName("number");
         distanceVariance.setRequired(false);
         options.addOption(distanceVariance);
